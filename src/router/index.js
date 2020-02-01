@@ -34,6 +34,31 @@ const routes = [
     path: '/address',
     name: 'address',
     component: () => import('../views/Address'),
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    component: () => import('../views/ShopMenu'),
+    children: [
+      {
+        path: '/shop',
+        name: 'orderMenu',
+        component: () => import('../components/shop/OrderMenu'),
+      },
+      {
+
+        path: '/shop/comments',
+        name: 'comments',
+        component: () => import('../components/shop/Comments'),
+      },
+      {
+
+        path: '/shop/shopDetail',
+        name: 'shopDetail',
+        component: () => import('../components/shop/ShopDetail'),
+      },
+
+    ]
   }
 ]
 

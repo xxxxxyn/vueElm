@@ -54,6 +54,7 @@
   import {swiper, swiperSlide} from 'vue-awesome-swiper'
   import ShopIntro from '../components/home/ShopIntro'
 
+
   export default {
     name: 'Home',
     components: {
@@ -190,6 +191,7 @@
     computed: {},
 
     beforeDestroy() {
+      //离开首页就解除
       window.removeEventListener('scroll', this.testTop)
 
     }

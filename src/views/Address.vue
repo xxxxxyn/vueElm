@@ -123,22 +123,9 @@
   }
 
   #list {
-    /*position: absolute;*/
-    /*height: calc(100% - 22vw);*/
-    /*width: 100vw;*/
-    /*overflow: scroll;*/
-    /*bottom: 0;*/
-    /*left: 50%;*/
-    /*-webkit-transform: translate(-50%, 0);*/
-    /*-moz-transform: translate(-50%, 0);*/
-    /*-ms-transform: translate(-50%, 0);*/
-    /*-o-transform: translate(-50%, 0);*/
-    /*transform: translate(-50%, 0);*/
     flex: 1;
     overflow-y: scroll;
     font-size: 18px;
-    /*height: 700px;*/
-    /*overflow: scroll;*/
   }
 
 

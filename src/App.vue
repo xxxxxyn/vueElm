@@ -1,12 +1,6 @@
 <template>
   <div id="app">
     <router-view/>
-    <!--<div>-->
-      <!--<router-link to="/">首页</router-link>-->
-      <!--<router-link to="/discover">发现</router-link>-->
-      <!--<router-link to="/order">订单</router-link>-->
-      <!--<router-link to="/mine">我的</router-link>-->
-    <!--</div>-->
   </div>
 </template>
 
