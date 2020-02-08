@@ -12,7 +12,13 @@ export default new Vuex.Store({
     currentReduceObj:'',//正在逛的店铺的满减规则
     currentMinPrice:'',//正在逛的店铺的最低配送费
     handlingFoodid:'',
-    emptyShopid:''
+    emptyShopid:'',
+
+    //样式类控制
+    //点餐、评论、商家是否已吸附
+    isStickNav: false,
+    //侧栏index
+    sideBarIndex:0
   },
   getter: {
 

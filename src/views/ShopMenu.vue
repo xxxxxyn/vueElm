@@ -1,6 +1,8 @@
 <template>
-  <div class="outest">
-    <div class="ShopTopBox" :class="{pullDownBox:pullDown}">
+  <!--下面是菜单评论商家盒子-->
+
+  <div class="menuBox" ref="outest">
+    <div class="shopTopBox" ref='shopTopBox' :class="{pullDownBox:pullDown}" @touchmove.prevent>
       <div class="coverImg">
         <img
           :src="encodeURI('https://fuss10.elemecdn.com/'+shopInfo.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')"
@@ -45,29 +47,24 @@
       </div>
     </div>
 
-    <!--下面是菜单评论商家盒子-->
-
-    <div class="menuBox">
-      <div>
-        <router-link to="/shop">点餐</router-link>
-        <router-link to="/shop/comments">评论</router-link>
-        <router-link to="/shop/shopDetail">商家</router-link>
-      </div>
-      <router-view v-bind:shopInfo="shopInfo" :reduceObj="reduceObj"></router-view>
+    <div :class="{shopNav:!this.$store.state.isStickNav,stickNav:this.$store.state.isStickNav}" ref="navBar">
+      <router-link to="/shop">点餐</router-link>
+      <router-link to="/shop/comments">评论</router-link>
+      <router-link to="/shop/shopDetail">商家</router-link>
     </div>
 
-
+    <router-view ref="child" v-bind:shopInfo="shopInfo" :reduceObj="reduceObj">
+    </router-view>
   </div>
+
+
 </template>
 
 <script>
 
   export default {
     name: "ShopMenu",
-    components: {
-
-
-    },
+    components: {},
 
     data() {
       return {
@@ -78,7 +75,7 @@
         //满减拆分
         everyReduce: [],
         //满减对象（传给子组件用）
-        reduceObj:'',
+        reduceObj: '',
         // 特价产品中的最低价格,默认是没有
         minSale: false,
         //折扣,默认是没有
@@ -104,8 +101,8 @@
             obj = res.data,
               console.log("shop_info.json请求成功"),
               this.shopInfo = obj,
-              this.$store.state.currentShopID=this.shopInfo.id,
-              this.$store.state.currentMinPrice=this.shopInfo.float_minimum_order_amount,
+              this.$store.state.currentShopID = this.shopInfo.id,
+              this.$store.state.currentMinPrice = this.shopInfo.float_minimum_order_amount,
               this.activitiesSort()
           ))
           .catch(function (err) {
@@ -125,7 +122,7 @@
             this.everyReduceAll = arr[i].description
             this.everyReduce = arr[i].description.split('，')
             this.reduceObj = JSON.parse(arr[i]["attribute"])
-            this.$store.state.currentReduceObj=this.reduceObj
+            this.$store.state.currentReduceObj = this.reduceObj
           } else if (arr[i].icon_name == '特价') {
             //只显示最低价的
             sales.push(arr[i].description)
@@ -147,7 +144,8 @@
       },
 
       shrinkLogo: function () {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        // let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        let scrollTop = this.$refs.outest.pageYOffset || this.$refs.outest.scrollTop
         if (scrollTop === 0) {
           this.logoHeight = 21 + 'vw'
           this.logoWidth = 21 + 'vw'
@@ -162,7 +160,29 @@
         }
       },
 
+      stickNav: function () {
+        let scrollTop = this.$refs.outest.pageYOffset || this.$refs.outest.scrollTop
+        if (scrollTop > this.$refs.shopTopBox.offsetHeight) {
+          this.$store.state.isStickNav = true
+        } else {
+          this.$store.state.isStickNav = false
+        }
+      },
 
+      targetIndex: function () {
+        // console.log('滑动')
+        let scrollTop1 = this.$refs.outest.scrollTop - this.$refs.shopTopBox.offsetHeight
+        let targatIndex = 0
+        let listHeight = 0
+        for (let i = 0; i < this.$refs.child.$refs.foodBoxList.length; i++) {
+          listHeight += this.$refs.child.$refs.foodBoxList[i].offsetHeight
+          if (scrollTop1 >= listHeight-1) {
+            //-1避免误差
+            targatIndex = i + 1
+          }
+        }
+        this.$refs.child.targetSelected(targatIndex)
+      },
     },
     created: function () {
       this.getShopInfo()
@@ -170,28 +190,40 @@
     },
 
     mounted() {
-      window.addEventListener('scroll', this.shrinkLogo)
+
+      this.$refs.outest.addEventListener('scroll', this.shrinkLogo)
+      this.$refs.outest.addEventListener('scroll', this.stickNav)
+      this.$refs.outest.addEventListener('scroll', this.targetIndex)
     },
 
+    watch: {
+      '$store.state.sideBarIndex': function (newIndex) {
+        console.log('检测到sideBarIndex改变')
+        let scrollTop = 0
+        for (let i = 0; i < newIndex; i++) {
+          scrollTop += this.$refs.child.$refs.foodBoxList[i].offsetHeight
+        }
+        // console.log(scrollTop)
+        this.$refs.outest.scrollTop = scrollTop + this.$refs.shopTopBox.offsetHeight
+      },
+
+    }
 
 
   }
 </script>
 
 <style scoped>
-  .outest {
 
-  }
-
-  .ShopTopBox {
-    /*height: 100vh;*/
+  .shopTopBox {
     display: flex;
     flex-direction: column;
-    overflow: auto
+    overflow: auto;
+    height: 70vw;
   }
 
   .pullDownBox {
-    height: 100vh;
+    height: 100vh !important;
   }
 
   .coverImg {
@@ -204,7 +236,7 @@
     width: 100vw;
   }
 
-  .ShopTopBox > img {
+  .shopTopBox > img {
     position: fixed;
     top: 25vw;
     left: 50vw;
@@ -312,9 +344,30 @@
 
   .menuBox {
     box-sizing: border-box;
-    margin-top: 10vw;
-    height: 99vh;
+    margin-top: 1vw;
+    height: 100vh;
     overflow-y: scroll;
+  }
+
+  .shopNav {
+    height: 10vw;
+    line-height: 10vw;
+    background-color: #ffffff;
+  }
+
+  .shopNav a, .stickNav a {
+    display: inline-block;
+    width: 33.3vw;
+    height: 10vw;
+    background-color: #ffff;
+  }
+
+  .stickNav {
+    position: fixed !important;
+    top: 0;
+    height: 10vw;
+    line-height: 10vw;
+    background-color: #ffffff;
   }
 
 

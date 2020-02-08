@@ -1,13 +1,20 @@
 <template>
-  <div>
-    <div>-----------商品----------</div>
-    <div v-for="category in menuList">
-      <h2>{{category.name}}</h2>
+  <div ref="menu" :class="{menu:!this.$store.state.isStickNav}">
+    <div v-if="this.$store.state.isStickNav" class="placeholder"></div>
+    <!--侧栏菜单分类-->
+    <div :class="{sideBar:!this.$store.state.isStickNav,sideBarStick:this.$store.state.isStickNav}">
+      <span :class="{sideBarTag:true,sideBarSelected:targetIndex===index}"
+         v-for="(category,index) in menuList" @click="targetClick(index)">{{category.name}}</span>
+    </div>
 
-      <!--每一款食物-->
-      <OrderMenuFood ref='eachFood' v-for="(food,index) in category.foods" v-bind:food="food">
-      </OrderMenuFood>
-
+    <!--放商品的盒子-->
+    <div class="foodMenuBox" ref="foodMenuBox">
+      <div v-for="(category,index) in menuList" ref="foodBoxList">
+        <h2>{{category.name}}</h2>
+        <!--每一款食物-->
+        <OrderMenuFood ref='eachFood' v-for="(food,index) in category.foods" v-bind:foodFromParent="food" v-if="food">
+        </OrderMenuFood>
+      </div>
       <!--购物车去结算底栏-->
       <div class="currentShopCart" @click="showCart()">
         <svg t="1579082870492" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -17,15 +24,16 @@
             p-id="17336" fill="#3B86F7"></path>
         </svg>
         <span>¥{{totalPrice}}</span>
+        <span class="dFee">另需配送费¥{{shopInfo.float_delivery_fee}}</span>
         <button :disabled="notReachMiniAmount">{{shopInfo.float_minimum_order_amount}}起送</button>
         <button v-if="!notReachMiniAmount">去结算</button>
       </div>
 
-      <!--点击购物车底栏操作增加或减少商品弹窗-->
+      <!--点击购物车底栏显示的操作增加或减少商品弹窗-->
       <div>
-        <div class="maskForSelect" v-show="false"></div>
+        <div class="maskForSelect" v-show="showAdjustCart"></div>
         <div class="adjustCart" v-show="showAdjustCart">
-          <div>已选商品
+          <div class="adjustCartTop">已选商品
             <button @click="emptyCurrentFood">清空</button>
           </div>
           <div v-for="item in currentShopFood">
@@ -81,9 +89,10 @@
         //总餐盒费
         packingFee: 0,
         totalPrice: 0,
-//显示下栏调整购物车数量
-        showAdjustCart: false
-
+        //显示下栏调整购物车数量
+        showAdjustCart: false,
+        //控制侧栏选中样式的index
+        targetIndex:0
       }
     },
     methods: {
@@ -100,6 +109,11 @@
           .catch(function (err) {
             console.log(err);
           })
+      },
+
+      goAnchor(selector) {
+        let anchor = this.$el.querySelector(selector)
+        document.body.scrollTop = anchor.offsetTop
       },
 
       showCart: function () {
@@ -144,7 +158,6 @@
             //对比attrs,因为key顺序一致，所以可以直接转化成字符串对比
             //没有attrs即undefined===undefined，也成立
             if (JSON.stringify(this.$store.state.cart[this.$store.state.cart.length - 1].attrs) === JSON.stringify(this.$store.state.cart[i].attrs)) {
-              console.log('一样的')
               this.$store.state.cart[i].num++
               console.log(this.$store.state.cart)
               this.$store.state.cart.pop()
@@ -158,7 +171,7 @@
         for (let i = 0; i < this.$store.state.cart.length; i++) {
           if (this.$store.state.cart[i].restaurant_id === this.$store.state.currentShopID) {
             currentShopFood.push(this.$store.state.cart[i])
-            console.log('属于本店！！！！')
+            // console.log('属于本店')
           }
         }
         // 如果没有这家店（初始状态）的不用继续，数据传给data，没有商品不满足配送
@@ -205,9 +218,9 @@
             totalPrice = originalTotalPrice + salePrice + packingFee
           }
 
-          if(totalPrice >= this.$store.state.currentMinPrice) {
+          if (totalPrice >= this.$store.state.currentMinPrice) {
             this.notReachMiniAmount = false
-          }else{
+          } else {
             this.notReachMiniAmount = true
           }
 
@@ -215,7 +228,6 @@
           this.packingFee = packingFee.toFixed(2)
           this.currentShopFood = currentShopFood
           // console.log("计算一次")
-          // console.log(totalPrice.toFixed(2))
           this.totalPrice = totalPrice.toFixed(2)
         }
 
@@ -262,6 +274,7 @@
         this.countCurrentShop()
         // this.$refs.eachFood.updateNum()
       },
+
       plusOne: function (sku_id, attrs) {
 
         if (!attrs) {
@@ -303,34 +316,99 @@
         console.log(this.$store.state.cart)
       },
 
+      // test: function () {
+      //   console.log('menu')
+      // },
+      //
+      // test1: function () {
+      //   console.log('windowwww')
+      // },
+      //
+      // test2: function () {
+      //   console.log('foodMenuBox')
+      // },
+
+      //点击侧栏定位商品种类
+      targetClick: function (index) {
+        // console.log('点击')
+        this.$store.state.sideBarIndex = index
+        this.targetIndex=index
+      },
+      targetSelected:function (index) {
+        // console.log('父组件触发的滑动index样式改变')
+        this.targetIndex=index
+        // this.$forceUpdate()
+      }
+
     },
 
     created() {
       this.getMenu()
 
-
     },
     mounted() {
       this.countCurrentShop()
+      // this.$refs.menu.addEventListener('scroll', this.test)
+      // window.addEventListener('scroll', this.test1)
+      // this.$refs.foodMenuBox.addEventListener('scroll', this.test2)
     },
-    updated() {
+
+    updated(index) {
 
     },
 
     beforeDestroy() {
-      console.log('updated', this.$store.state.currentShopID)
+
     },
 
-    watch: {},
+    watch: {
+    },
 
-
-    computed: {},
-
+    computed: {
+    },
 
   }
 </script>
 
 <style scoped>
+  .menu {
+    position: relative;
+  }
+
+  .sideBar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20vw;
+    background-color: rgba(205, 205, 205, 0.3);
+  }
+
+  .sideBarStick {
+    position: absolute;
+    left: 0;
+    top: 10vw;
+    width: 20vw;
+    background-color: rgba(205, 205, 205, 0.3);
+  }
+
+  .sideBarTag {
+    display: inline-block;
+    width: 20vw;
+    padding:2vw 0;
+    text-align: center;
+    text-overflow:clip;
+    color: #565656;
+  }
+
+  .sideBarSelected {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  .foodMenuBox {
+    padding-left: 20vw;
+  }
+
   .oneFood img {
     height: 25vw;
     width: 25vw;
@@ -341,7 +419,8 @@
     width: 100vw;
     height: 20vw;
     bottom: 0;
-    background-color: #747474;
+    left: 0;
+    background-color: rgba(95, 95, 95, 0.95);
     text-align: left;
     font-size: 5.5vw;
     color: white;
@@ -381,22 +460,43 @@
     padding-top: 3vw;
   }
 
+  .currentShopCart .dFee{
+    position: absolute;
+    top: 5vw;
+    margin-left: 2vw;
+    padding-top: 3vw;
+    font-size: 3vw;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
   .maskForSelect {
     position: fixed;
     bottom: 0;
+    left: 0;
     height: 100vh;
     width: 100vw;
     background-color: rgba(122, 122, 122, 0.46);
-    z-index: 123456;
+    z-index: 1234567;
   }
 
   .adjustCart {
     position: fixed;
     bottom: 20vw;
+    left: 0;
     width: 100vw;
     background-color: #fff;
     z-index: 1234567;
   }
 
+  .adjustCartTop{
+    display: flex;
+    justify-content:space-between;
+    background-color: rgba(205, 205, 205, 0.4);
+    padding: 0 5vw;
+  }
+
+  .placeholder {
+    height: 10vw;
+  }
 
 </style>

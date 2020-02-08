@@ -23,7 +23,6 @@
     data() {
       return {
         selectedIndex: 0,
-
       }
     },
     methods: {

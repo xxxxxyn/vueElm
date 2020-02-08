@@ -1,75 +1,76 @@
 <template>
   <div class="oneFood">
     <img
-      :src="encodeURI('https://fuss10.elemecdn.com/'+food.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')">
-    <div>
-      <div>{{food.name}}</div>
-      <div>{{food.description}}</div>
+      :src="encodeURI('https://fuss10.elemecdn.com/'+foodFromParent.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')">
+    <div class="info">
+      <h3>{{foodFromParent.name}}</h3>
+      <p class="description">{{foodFromParent.description}}</p>
       <div>
-        <span>月售 {{food.month_sales}}</span>
-        <span>好评率 {{food.satisfy_rate}}%</span>
+        <span>月售 {{foodFromParent.month_sales}}</span>
+        <span>好评率 {{foodFromParent.satisfy_rate}}%</span>
       </div>
-      <div>
+      <div class="price">
         <!--specifications是空数组就是价格只有一种-->
-        <span v-if="food.specifications!==undefined && food.specifications.length===0 ? 1 :0">{{food.specfoods[0].price}}元</span>
-        <span v-if="food.specifications!==undefined && food.specifications.length>0 ? 1 :0">{{food.specfoods[0].price}}元起</span>
+        <div>
+          <span v-if="foodFromParent.specifications!==undefined && foodFromParent.specifications.length===0 ? 1 :0">¥{{foodFromParent.specfoods[0].price}}</span>
+          <span v-if="foodFromParent.specifications!==undefined && foodFromParent.specifications.length>0 ? 1 :0">¥{{foodFromParent.specfoods[0].price}}起</span>
+        </div>
 
-        <!--num要不为零才有减号,有可以选择的都不能在这里操作-->
-        <button @click="reduceOne()" class="addButton"
-                v-if="foodNum"
-                :disabled="food.specifications.length!==0"
-        >
-          -
-        </button>
+        <div>
+          <!--num要不为零才有减号,有可以选择的都不能在这里操作-->
+          <button @click="reduceOne()" class="addButton"
+                  v-if="foodNum"
+                  :disabled="foodFromParent.specifications.length!==0"
+          >
+            -
+          </button>
+          <span v-if="foodNum" class="foodNum">{{foodNum}}</span>
 
+          <!--attrs或者specifications不为空都会弹窗可以选择-->
+          <button @click="showSelectBox()" class="addButton"
+                  v-if="foodFromParent.specifications!==undefined && foodFromParent.specifications.length>0 ||foodFromParent.attrs!==undefined && foodFromParent.attrs.length>0 ? 1 :0">
+            +
+          </button>
+          <button @click="addCart()" class="addButton"
+                  v-if="foodFromParent.specifications!==undefined && foodFromParent.specifications.length===0 &&foodFromParent.attrs!==undefined && foodFromParent.attrs.length===0">
+            +
+          </button>
+        </div>
 
-        <span v-if="foodNum">{{foodNum}}</span>
-
-
-        <!--attrs或者specifications不为空都会弹窗可以选择-->
-        <button @click="showSelectBox()" class="addButton"
-                v-if="food.specifications!==undefined && food.specifications.length>0 ||food.attrs!==undefined && food.attrs.length>0 ? 1 :0">
-          +
-        </button>
-        <button @click="addCart()" class="addButton"
-                v-if="food.specifications!==undefined && food.specifications.length===0 &&food.attrs!==undefined && food.attrs.length===0">
-          +
-        </button>
       </div>
     </div>
 
     <!--规格选择弹窗-->
     <!--放进购物车之前的选择box-->
-    <div class="maskForSelect" v-show="showForSelect"></div>
-    <div class="selectAddCart" v-show="showForSelect">
+    <div class="maskForSelect" v-if="showForSelect" @touchmove.prevent></div>
+    <div class="selectAddCart" v-if="showForSelect">
       <div>
         <img
-          :src="encodeURI('https://fuss10.elemecdn.com/'+food.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')">
+          :src="encodeURI('https://fuss10.elemecdn.com/'+foodFromParent.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')">
         <div class="selectedInfo">
           <div class="line1">
-            <span>{{food.name}}</span>
+            <span>{{foodFromParent.name}}</span>
             <button class='closeBtn' @click="closeSelect()">×</button>
           </div>
           <span>已选：
             <span>{{selectedSp}}</span>
             <span v-for="item in attrsValue">/{{item}}</span>
           </span>
-          <div class="price">¥{{food.specfoods[spcfIndex].price}}</div>
+          <div class="price">¥{{foodFromParent.specfoods[spcfIndex].price}}</div>
         </div>
       </div>
       <!--规格选择-->
-      <ul v-if="food.specifications!==undefined && food.specifications.length>0 ? 1 :0">
+      <ul v-if="foodFromParent.specifications!==undefined && foodFromParent.specifications.length>0 ? 1 :0">
         <p>规格</p>
-        <li v-for="(value,index) in food.specifications[0].values"
+        <li v-for="(value,index) in foodFromParent.specifications[0].values"
             :class="index===spcfIndex?'activeLi':''"
             @click="showSelectedFood(index)">
           {{value}}
         </li>
       </ul>
-      <div v-if="food.attrs!==undefined && food.attrs.length>0 ? 1 :0">
-        <OrderMenuFoodSelect v-for="(attr,attrIndex) in food.attrs" v-bind:attr="attr"
+      <div v-if="foodFromParent.attrs!==undefined && foodFromParent.attrs.length>0 ? 1 :0">
+        <OrderMenuFoodSelect v-for="(attr,attrIndex) in foodFromParent.attrs" v-bind:attr="attr" v-if="attr"
                              @attrsGetFromChild="attrsValuesHandle(arguments)">
-
         </OrderMenuFoodSelect>
       </div>
 
@@ -88,7 +89,7 @@
       OrderMenuFoodSelect
     },
     props: {
-      food: '',
+      foodFromParent: '',
       // type: Object
     },
     data() {
@@ -106,7 +107,6 @@
         // attrValue:[0,0,0],
         checkedList: [],
         foodNum: 0,
-
       }
 
     },
@@ -121,7 +121,7 @@
       addCart: function () {
         //规格和attrs都没得选择的，直接加入specfoods[0]
         let food = {}
-        food = JSON.parse(JSON.stringify(this.food.specfoods[0]))
+        food = JSON.parse(JSON.stringify(this.foodFromParent.specfoods[0]))
         this.$store.state.cart.push(food)
         //this.$store.state.cart[this.$store.state.cart.length-1].num=1
         this.$parent.countCurrentShop()
@@ -132,12 +132,12 @@
       addSelectCart: function () {
         // 既要知道规格选了哪个，确定价格，也要知道attrs选了哪些
         let food = {}
-        food = JSON.parse(JSON.stringify(this.food.specfoods[this.spcfIndex]))
+        food = JSON.parse(JSON.stringify(this.foodFromParent.specfoods[this.spcfIndex]))
         this.$store.state.cart.push(food)
         let obj = {}
         obj = JSON.parse(JSON.stringify(this.attrsValue))
         this.$store.state.cart[this.$store.state.cart.length - 1]["attrs"] = obj
-        // console.log(this.food.specfoods[this.spcfIndex])
+        // console.log(this.foodFromParent.specfoods[this.spcfIndex])
         this.$parent.countCurrentShop()
         this.foodNum++
         console.log(this.$store.state.cart)
@@ -156,13 +156,13 @@
 
       showSelectedFood: function (index) {
         this.spcfIndex = index
-        this.selectedSp = this.food.specifications[0]["values"][index]
+        this.selectedSp = this.foodFromParent.specifications[0]["values"][index]
 
       },
 
       reduceOne: function () {
         for (let i = 0; i < this.$store.state.cart.length; i++) {
-          if (this.$store.state.cart[i].virtual_food_id === this.food.virtual_food_id) {
+          if (this.$store.state.cart[i].virtual_food_id === this.foodFromParent.virtual_food_id) {
             if (this.$store.state.cart[i].num === 1) {
               //减到num=1时再减就是删除
               this.$store.state.cart.splice(i, 1)
@@ -179,9 +179,9 @@
       updateNum: function () {
         let isZero = true
 
-        if (this.food.specifications === 0) {
+        if (this.foodFromParent.specifications === 0) {
           for (let i = 0; i < this.$store.state.cart.length; i++) {
-            if (this.$store.state.cart[i].virtual_food_id === this.food.virtual_food_id) {
+            if (this.$store.state.cart[i].virtual_food_id === this.foodFromParent.virtual_food_id) {
               this.foodNum = this.$store.state.cart[i].num
               //找到了就不为0
               isZero = false
@@ -190,7 +190,7 @@
         } else {
           let tempNum = 0
           for (let i = 0; i < this.$store.state.cart.length; i++) {
-            if (this.$store.state.cart[i].virtual_food_id === this.food.virtual_food_id) {
+            if (this.$store.state.cart[i].virtual_food_id === this.foodFromParent.virtual_food_id) {
               tempNum += this.$store.state.cart[i].num
               //找到了就不为0
               isZero = false
@@ -219,17 +219,21 @@
 
     mounted() {
       //有规格要选的默认选中第一个，传进去显示出来
-      if (this.food.specifications.length > 0) {
-        this.selectedSp = this.food.specifications[0]["values"][this.spcfIndex]
+      if (this.foodFromParent.specifications.length > 0) {
+        this.selectedSp = this.foodFromParent.specifications[0]["values"][this.spcfIndex]
       }
 
     },
+
+    // updated(){
+    //   this.food=this.foodFromParent
+    // },
 
     computed: {},
 
     watch: {
       "$store.state.handlingFoodid": function () {
-        if (this.$store.state.handlingFoodid === this.food.virtual_food_id) {
+        if (this.$store.state.handlingFoodid === this.foodFromParent.virtual_food_id) {
           this.updateNum()
           //操作完之后清空handlingFoodid，避免和上一次的一样就不触发了
           this.$store.state.handlingFoodid = ''
@@ -239,35 +243,75 @@
 
 
   }
+
 </script>
 
 <style scoped>
+  .oneFood {
+    padding-bottom: 5vw;
+  }
+
   .oneFood img {
     height: 25vw;
     width: 25vw;
+    vertical-align: top;
+  }
+
+  .oneFood .info {
+    display: inline-block;
+    width: 50vw;
+    font-size: 3.5vw;
+    color: #aaaaaa;
+  }
+
+
+  .oneFood .foodNum{
+    color: #000000;
+    padding: 0 1vw;
+  }
+
+  .oneFood h3 {
+    font-size: 4.5vw;
+    color: #222222;
+  }
+
+  .oneFood .description{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow:hidden;
+  }
+
+
+  .oneFood .price {
+    font-size: 4.5vw;
+    color: #ec2115;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5vw;
   }
 
   .selectAddCart {
-    width: 100vw;
-    height: 90vh;
-    overflow: auto;
-    background-color: #ffffff;
     position: fixed;
     bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 130vw;
+    overflow: auto;
+    background-color: #ffffff;
     z-index: 123456789;
   }
 
-  .selectAddCart>div,.selectAddCart>ul{
+  .selectAddCart > div, .selectAddCart > ul {
     margin-left: 4vw;
     text-align: left;
   }
 
-  .selectAddCart img{
+  .selectAddCart img {
     width: 20vw;
     height: 20vw;
   }
 
-  .selectAddCart .confirm{
+  .selectAddCart .confirm {
     width: 80vw;
     height: 8vw;
     margin-bottom: 3vw;
@@ -275,57 +319,57 @@
     color: #ffffff;
   }
 
-  .selectAddCart .selectedInfo{
+  .selectAddCart .selectedInfo {
     display: inline-block;
     width: 70vw;
   }
 
-  .selectAddCart .closeBtn{
+  .selectAddCart .closeBtn {
     height: 10vw;
     width: 10vw;
     margin-right: 0;
-    margin-top: -2vw!important;
+    margin-top: -2vw !important;
     font-size: 9vw;
     background-color: rgba(255, 255, 255, 0);
     color: #b3b3b3;
   }
 
-  .selectedInfo{
+  .selectedInfo {
     margin-left: 2vw;
   }
 
-  .selectedInfo .line1{
+  .selectedInfo .line1 {
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     margin-top: 3vw;
     font-size: 4vw;
     font-weight: 600;
   }
 
-  .selectedInfo .line1 span{
+  .selectedInfo .line1 span {
     display: inline-block;
     text-align: center;
   }
 
-  .selectedInfo>span{
+  .selectedInfo > span {
     display: inline-block;
     height: 10vw;
   }
 
-  .selectedInfo .price{
+  .selectedInfo .price {
     color: #ec2115;
     font-size: 5vw;
     font-weight: 600;
   }
 
-
   .maskForSelect {
     position: fixed;
+    left: 0;
     bottom: 0;
     height: 100vh;
     width: 100vw;
     background-color: rgba(122, 122, 122, 0.46);
-    z-index: 123456;
+    z-index: 1234567;
   }
 
   .addButton {
@@ -350,7 +394,7 @@
     margin-right: 4vw;
     margin-bottom: 3vw;
     text-align: center;
-    line-height:7vw ;
+    line-height: 7vw;
   }
 
   .activeLi {
