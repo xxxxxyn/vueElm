@@ -79,7 +79,7 @@
     },
     mounted() {
       //svg颜色变化
-      console.log(this.$route.path)
+      // console.log(this.$route.path)
       for (let i = 0; i < this.$refs.nav.children.length; i++) {
         if (this.$refs.nav.children[i].pathname === this.$route.path) {
           let arr = this.$refs.nav.children[i].querySelectorAll('path')
@@ -101,7 +101,6 @@
 <style scoped>
   #nav {
     position: fixed;
-    /*脱离了flex*/
     bottom: 0;
     background-color: #fff;
     height: 15vw;

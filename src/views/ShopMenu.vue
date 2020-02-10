@@ -3,6 +3,7 @@
 
   <div class="menuBox" ref="outest">
     <div class="shopTopBox" ref='shopTopBox' :class="{pullDownBox:pullDown}" @touchmove.prevent>
+      <button class="goBack" @click="goBack()"><</button>
       <div class="coverImg">
         <img
           :src="encodeURI('https://fuss10.elemecdn.com/'+shopInfo.image_path +'?imageMogr/format/webp/thumbnail/!130x130r/gravity/Center/crop/130x130/')"
@@ -32,7 +33,7 @@
         </div>
       </div>
 
-      <!--下拉显示.不在ShopTopBox里面，因为打开后要占满剩余高度-->
+      <!--下拉显示.不在ShopTopBox里面，因为打开后要占满剩余高度。并且要拉回到最顶部-->
       <div class='activityDetailed' v-show='pullDown' @touchmove.prevent>
         <div class="title1"><h3>优惠</h3>
           <p @click.stop.prevent="openActivities()">∧</p></div>
@@ -93,13 +94,17 @@
     },
     methods: {
 
+      goBack:function(){
+        this.$router.push('/');
+      },
+
       getShopInfo: function () {
         let obj
         this.axios
           .get('http://localhost:8080/api/api_shop_info.json')
           .then(res => (
             obj = res.data,
-              console.log("shop_info.json请求成功"),
+              // console.log("shop_info.json请求成功"),
               this.shopInfo = obj,
               this.$store.state.currentShopID = this.shopInfo.id,
               this.$store.state.currentMinPrice = this.shopInfo.float_minimum_order_amount,
@@ -198,7 +203,7 @@
 
     watch: {
       '$store.state.sideBarIndex': function (newIndex) {
-        console.log('检测到sideBarIndex改变')
+        // console.log('检测到sideBarIndex改变')
         let scrollTop = 0
         for (let i = 0; i < newIndex; i++) {
           scrollTop += this.$refs.child.$refs.foodBoxList[i].offsetHeight
@@ -206,6 +211,12 @@
         // console.log(scrollTop)
         this.$refs.outest.scrollTop = scrollTop + this.$refs.shopTopBox.offsetHeight
       },
+
+      "pullDown":function () {
+        if(this.pullDown){
+          this.$refs.outest.scrollTop=0
+        }
+      }
 
     }
 
@@ -220,6 +231,18 @@
     flex-direction: column;
     overflow: auto;
     height: 70vw;
+    position: relative;
+  }
+
+  .shopTopBox .goBack{
+    position: absolute;
+    top: 5vw;
+    left: 5vw;
+    height: 7vw;
+    width: 7vw;
+    font-size: 7vw;
+    background-color: rgba(255, 255, 255, 0);
+    transform:scale(0.7,1);
   }
 
   .pullDownBox {
@@ -229,7 +252,7 @@
   .coverImg {
     background-color: skyblue;
     height: 40vw;
-    overflow: hidden
+    overflow: hidden;
   }
 
   .coverImg img {
@@ -245,6 +268,10 @@
     -ms-transform: translateX(-50%);
     -o-transform: translateX(-50%);
     transform: translateX(-50%);
+  }
+  
+  .shopInfo{
+    position: relative;
   }
 
   .shopInfo .line1 {

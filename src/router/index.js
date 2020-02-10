@@ -11,7 +11,6 @@ const routes = [
     name: 'home',
     component: Home,
     children: [
-
     ]
   },
   {

@@ -22,20 +22,9 @@ export default new Vuex.Store({
   },
   getter: {
 
-
   },
 
   mutations: {
-    //统计一样的商品的数量
-    // numCount: function (shopId) {
-    //   //商品完全一模一样只需要sku_id和attrs一样，统计完全一样的商品数量
-    //   for (let i = 0; i < state.cart.length; i++) {
-    //     if (state.cart[i].restaurant_id === this.shopID) {
-    //
-    //     }
-    //
-    //   }
-    // }
 
   },
   actions: {},

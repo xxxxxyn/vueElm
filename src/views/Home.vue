@@ -18,7 +18,7 @@
     <!--主要部分-->
     <main onscroll="testTop()">
 
-      <!--大类选择-->
+      <!--商品种类选择-->
       <swiper id="box1" :options="swiperOption" class="mint-swipe outerBox">
         <swiper-slide v-for="(pageNum,index) in entryList" :key="index" class="mint-swipe-items-wrap innerBox">
           <div v-for="(entry, indexOfEntry) in entryList[index]" :key="indexOfEntry"><a href="#"><img
@@ -28,7 +28,6 @@
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
-
 
       <br>
       <div>—— 推荐商家 ——</div>
@@ -67,7 +66,7 @@
       return {
         stick: false,
         entryList: [],
-        shopList:[],
+        shopList: [],
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -80,7 +79,7 @@
 
     },
     methods: {
-//搜索栏吸附效果
+      //搜索栏吸附效果
       testTop: function () {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
         if (scrollTop > this.$refs.top.offsetHeight) {
@@ -118,8 +117,6 @@
             console.log(err);
           })
       },
-
-
       // 获取entry
       getEntries: function () {
         let arr
@@ -127,9 +124,8 @@
         this.axios
           .get('http://localhost:8080/api/api_entries.json')
           .then(res => (
-            console.log("entries.json请求成功"),
+            // console.log("entries.json请求成功"),
               arr = res.data[0]["entries"],
-              // console.log(arr),
               this.sliceArr(arr)
           ))
           .catch(function (err) {
@@ -138,17 +134,15 @@
 
 
       },
-//由于要分页，还是先分成若干数组，一页只能有10个,每十个分成一组
+      //由于要分页，还是先分成若干数组，一页只能有10个,每十个分成一组
       sliceArr: function (arr) {
         let outerArr = []
-
         for (let i = 0; i < arr.length; i += 10) {
           outerArr.push(arr.slice(i, i + 10))
         }
         this.entryList = outerArr
 
       },
-
       //获取商店
       getShops: function () {
 
@@ -156,7 +150,7 @@
         this.axios
           .get('http://localhost:8080/api/api_restaurants.json')
           .then(res => (
-            console.log("restaurants.json请求成功"),
+            // console.log("restaurants.json请求成功"),
               arr = res.data['items'],
               this.shopList = arr
           ))
