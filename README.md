@@ -31,15 +31,15 @@ pinyin-match
 
 首页
 
-![text] (https://raw.githubusercontent.com/xxxxxyn/vueElm/master/imgForShow/home.gif)
+![] (https://github.com/xxxxxyn/vueElm/blob/master/imgForShow/home.gif?raw=true)
 
 地址页
 
-![text] (https://raw.githubusercontent.com/xxxxxyn/vueElm/master/imgForShow/address.gif)
+![] (https://github.com/xxxxxyn/vueElm/blob/master/imgForShow/address.gif?raw=true)
 
 菜单页
 
-![text] (https://github.com/xxxxxyn/vueElm/blob/master/imgForShow/menu.gif?raw=true)
+![] (https://github.com/xxxxxyn/vueElm/blob/master/imgForShow/menu.gif?raw=true)
 
 
 
