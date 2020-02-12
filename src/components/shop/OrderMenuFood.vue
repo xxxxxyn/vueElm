@@ -112,7 +112,6 @@
     },
     methods: {
 
-
       //点击之后弹出选择盒子
       showSelectBox: function () {
         this.showForSelect = !this.showForSelect
@@ -225,9 +224,6 @@
 
     },
 
-    // updated(){
-    //   this.food=this.foodFromParent
-    // },
 
     computed: {},
 
@@ -390,6 +386,8 @@
     width: 28vw;
     height: 7vw;
     font-size: 3.5vw;
+    overflow: hidden;
+    text-overflow:ellipsis;
     background-color: rgba(205, 205, 205, 0.51);
     margin-right: 4vw;
     margin-bottom: 3vw;

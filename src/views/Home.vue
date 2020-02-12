@@ -162,7 +162,6 @@
     },
 
     created: function () {
-
       this.getEntries()
       this.getShops()
 
