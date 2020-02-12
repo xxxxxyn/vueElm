@@ -27,9 +27,19 @@ pinyin-match
 
 菜单页由于我只找到其中一家店的api，所以首页内每一家店铺点进去暂时都只是同一家。
 
+效果展示
 
+首页
 
+![text] (https://raw.githubusercontent.com/xxxxxyn/vueElm/master/imgForShow/home.gif)
 
+地址页
+
+![text] (https://raw.githubusercontent.com/xxxxxyn/vueElm/master/imgForShow/address.gif)
+
+菜单页
+
+![text] (https://github.com/xxxxxyn/vueElm/blob/master/imgForShow/menu.gif?raw=true)
 
 
 
