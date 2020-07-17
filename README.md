@@ -44,3 +44,36 @@ pinyin-match
 
 
 
+
+## 项目树状结构
+
+
+
+|   |-- App.vue
+|   |-- assets
+|   |   `-- logo.png
+|   |-- components
+|   |   |-- NavBar.vue-----------通用组件-下栏导航
+|   |   |-- home
+|   |   |   `-- ShopIntro.vue------------首页点击能跳到商铺菜单页面的组件
+|   |   `-- shop
+|   |       |-- Comments.vue-------------商铺评论组件
+|   |       |-- OrderMenu.vue------------商铺菜单组件
+|   |       |-- OrderMenuFood.vue--------商铺菜单组件--每个商品组件
+|   |       |-- OrderMenuFoodSelect.vue--商铺菜单组件--每个商品组件--选择属性组件
+|   |       `-- ShopDetail.vue----------商铺详情组件
+|   |-- main.js
+|   |-- router
+|   |   `-- index.js
+|   |-- store
+|   |   `-- index.js
+|   `-- views
+|       |-- Address.vue--------选址页
+|       |-- Discover.vue-------发现页
+|       |-- Home.vue-------首页
+|       |-- Mine.vue-------我的页面
+|       |-- Order.vue------订单页面
+|       `-- ShopMenu.vue---------单个商铺菜单页
+`-- vue.config.js
+
+
