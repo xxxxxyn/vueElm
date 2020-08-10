@@ -10,35 +10,44 @@
             </div>
             <div class="box2">设置和对话</div>
         </div>
-        <div class="mineOneBox">
-            <h3>我的资产</h3>
-            <div>
-                <div>{{coupon}}</div>
-                <div>红包卡券</div>
-            </div>
-            <div>
-                <div>{{allowance}}</div>
-                <div>津贴可叠加</div>
-            </div>
-        </div>
-        <div class="mineOneBox">
-            <span>福利中心</span>
-            <span>做任务赢奖励</span>
-        </div>
-        <div class="mineOneBox">常用功能</div>
-        <div class="mineOneBox">我的钱包</div>
-        <div class="mineOneBox">更多推荐</div>
+<!--        <div class="mineOneBox">-->
+<!--            <h3>我的资产</h3>-->
+<!--            <div>-->
+<!--                <div>{{coupon}}</div>-->
+<!--                <div>红包卡券</div>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <div>{{allowance}}</div>-->
+<!--                <div>津贴可叠加</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="mineOneBox">-->
+<!--            <span>福利中心</span>-->
+<!--            <span>做任务赢奖励</span>-->
+<!--        </div>-->
+<!--        <div class="mineOneBox">-->
+<!--            <h3>常用功能</h3>-->
+<!--            <div><span>购物车</span></div>-->
+<!--            <div><span>收藏</span></div>-->
+<!--            <div><span>地址</span></div>-->
+<!--            <div><span>客服</span></div>-->
+<!--        </div>-->
+
+        <MineBox></MineBox>
+
         <NavBar></NavBar>
     </div>
 </template>
 
 <script>
     import NavBar from '../components/NavBar'
+    import MineBox from '../components/Mine/Box'
 
     export default {
         name: "Mine",
         components: {
-            NavBar
+            NavBar,
+            MineBox
         },
         data() {
             return {
@@ -162,7 +171,7 @@
         width: 100vw;
     }
 
-    #mineBox .mineOneBox:nth-child(4) span:nth-child(1){
+    #mineBox .mineOneBox:nth-child(4) span:nth-child(1) {
         position: absolute;
         left: 3vw;
         top: 50%;
@@ -173,7 +182,7 @@
         /*padding: 3vw 0 0 3vw;*/
     }
 
-    #mineBox .mineOneBox:nth-child(4) span:nth-child(2){
+    #mineBox .mineOneBox:nth-child(4) span:nth-child(2) {
         position: absolute;
         right: 8vw;
         top: 50%;
@@ -181,6 +190,12 @@
         display: inline-block;
         font-size: 14px;
         /*padding: 3vw 0 0 3vw;*/
+    }
+
+    /*常用功能*/
+    #mineBox .mineOneBox:nth-child(5) {
+        height: 20vh;
+        width: 100vw;
     }
 
 </style>
