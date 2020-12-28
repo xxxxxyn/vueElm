@@ -36,7 +36,7 @@
       <!--各个商店-->
 
       <div id="box2">
-        <ShopIntro v-for="shop in shopList" :shop='shop'></ShopIntro>
+        <ShopIntro v-for="(shop,index) in shopList" :shop='shop' :key="index"></ShopIntro>
       </div>
     </main>
 
@@ -122,7 +122,7 @@
         let arr
 
         this.axios
-          .get('http://localhost:8080/api/api_entries.json')
+          .get(window._CONFIG['local']+'api/api_entries.json')
           .then(res => (
             // console.log("entries.json请求成功"),
               arr = res.data[0]["entries"],
@@ -148,7 +148,7 @@
 
         let arr
         this.axios
-          .get('http://localhost:8080/api/api_restaurants.json')
+          .get(window._CONFIG['local']+'api/api_restaurants.json')
           .then(res => (
             // console.log("restaurants.json请求成功"),
               arr = res.data['items'],

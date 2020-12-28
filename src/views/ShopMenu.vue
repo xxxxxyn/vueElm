@@ -25,7 +25,7 @@
              v-show='!pullDown'
              v-if="shopInfo.activities!==undefined && shopInfo.activities.length>0 ? 1 :0">
           <div>
-            <span v-for="reduce in everyReduce">{{reduce}}</span>
+            <span v-for="(reduce,index) in everyReduce" :key="index">{{reduce}}</span>
           </div>
           <div>
             <span class='openBtn' ref="openBtn" @click.stop.prevent="openActivities()">∨</span>
@@ -101,7 +101,7 @@
       getShopInfo: function () {
         let obj
         this.axios
-          .get('http://localhost:8080/api/api_shop_info.json')
+          .get(window._CONFIG['local']+'api/api_shop_info.json')
           .then(res => (
             obj = res.data,
               // console.log("shop_info.json请求成功"),
