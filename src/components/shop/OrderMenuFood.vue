@@ -54,7 +54,7 @@
           </div>
           <span>已选：
             <span>{{selectedSp}}</span>
-            <span v-for="item in attrsValue">/{{item}}</span>
+            <span v-for="(item,index) in attrsValue" :key="index">/{{item}}</span>
           </span>
           <div class="price">¥{{foodFromParent.specfoods[spcfIndex].price}}</div>
         </div>
@@ -64,13 +64,15 @@
         <p>规格</p>
         <li v-for="(value,index) in foodFromParent.specifications[0].values"
             :class="index===spcfIndex?'activeLi':''"
-            @click="showSelectedFood(index)">
+            @click="showSelectedFood(index)"
+            :key="index">
           {{value}}
         </li>
       </ul>
       <div v-if="foodFromParent.attrs!==undefined && foodFromParent.attrs.length>0 ? 1 :0">
         <OrderMenuFoodSelect v-for="(attr,attrIndex) in foodFromParent.attrs" v-bind:attr="attr" v-if="attr"
-                             @attrsGetFromChild="attrsValuesHandle(arguments)">
+                             @attrsGetFromChild="attrsValuesHandle(arguments)"
+                             :key="attrIndex">
         </OrderMenuFoodSelect>
       </div>
 

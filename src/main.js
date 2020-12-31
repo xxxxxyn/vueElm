@@ -7,6 +7,11 @@ import VueAxios from 'vue-axios'
 import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(ElementUI);
+
 Vue.use(VueAwesomeSwiper)
 
 Vue.use(VueAxios,axios);

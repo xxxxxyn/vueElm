@@ -4,15 +4,19 @@
     <!--侧栏菜单分类-->
     <div :class="{sideBar:!this.$store.state.isStickNav,sideBarStick:this.$store.state.isStickNav}">
       <span :class="{sideBarTag:true,sideBarSelected:targetIndex===index}"
-         v-for="(category,index) in menuList" @click="targetClick(index)">{{category.name}}</span>
+         v-for="(category,index) in menuList" @click="targetClick(index)" :key="index">{{category.name}}</span>
     </div>
 
     <!--放商品的盒子-->
     <div class="foodMenuBox" ref="foodMenuBox">
-      <div v-for="(category,index) in menuList" ref="foodBoxList">
+      <div v-for="(category,index) in menuList" ref="foodBoxList" :key="index">
         <h2>{{category.name}}</h2>
         <!--每一款食物-->
-        <OrderMenuFood ref='eachFood' v-for="(food,index) in category.foods" v-bind:foodFromParent="food" v-if="food">
+        <OrderMenuFood ref='eachFood' v-for="(food,index) in category.foods"
+                       v-bind:foodFromParent="food"
+                       v-if="food"
+                       :key="index"
+        >
         </OrderMenuFood>
       </div>
       <!--购物车去结算底栏-->
@@ -36,7 +40,7 @@
           <div class="adjustCartTop">已选商品
             <button @click="emptyCurrentFood">清空</button>
           </div>
-          <div v-for="item in currentShopFood">
+          <div v-for="(item,index) in currentShopFood" :key="index">
             <div v-if="item!==undefined">
               <span>{{item.name}}</span>
               <span>¥{{item.price}}</span>
@@ -48,7 +52,7 @@
             <div v-if="item!==undefined">
               <span v-if="item.specs.length>0">{{item.specs[0].value}}</span>
               <span v-if="item.attrs!==undefined">
-                <span v-for="attr in item.attrs">/{{attr}}</span>
+                <span v-for="(attr,index) in item.attrs" :key="index">/{{attr}}</span>
               </span>
             </div>
           </div>

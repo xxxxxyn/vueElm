@@ -2,6 +2,7 @@
   <div id="city">
     <header>
       <div class="searchCity">
+        <i class="el-icon-close" @click="goBack"></i>
         <input type="text" @input="inputCity(value)" v-model="value">
         <ul v-if="value">
           <li v-for="(item,index) in cityTip" :key="index" @click="selectCity(item)">{{item}}</li>
@@ -13,14 +14,14 @@
     <!--城市列表-->
     <div id="list" ref="outerBox" class="outerBox">
       <div ref="listBox">
-        <ul v-for="(item,index) in this.$store.state.cityList" :index="index">{{item.letter}}
-          <li v-for="city in item.list" @click="selectCity(city)">{{city}}</li>
+        <ul v-for="(item,index) in this.$store.state.cityList" :index="index" :key="index">{{item.letter}}
+          <li v-for="city in item.list" @click="selectCity(city)" :key="index">{{city}}</li>
         </ul>
       </div>
 
     </div>
     <ul class="letterList" ref="letterList" @touchend="touchEnd()">
-      <li v-for="(item,index) in this.$store.state.cityList" :index="index">{{item.letter}}</li>
+      <li v-for="(item,index) in this.$store.state.cityList" :index="index" :key="index">{{item.letter}}</li>
     </ul>
   </div>
 </template>
@@ -104,7 +105,9 @@
 
       },
 
-
+      goBack(){
+        this.$router.back()
+      }
     },
 
     mounted() {
@@ -205,6 +208,11 @@
   .letterList li {
     /*height: 2.5vh;*/
     height: 16px;
+  }
+
+  i{
+    width: 15px;
+    height: 15px;
   }
 
 
