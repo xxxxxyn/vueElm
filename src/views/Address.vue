@@ -2,7 +2,7 @@
   <div id="city">
     <header>
       <div class="searchCity">
-        <i class="el-icon-close" @click="goBack"></i>
+        <i class="el-icon-arrow-left" @click="goBack"></i>
         <input type="text" @input="inputCity(value)" v-model="value">
         <ul v-if="value">
           <li v-for="(item,index) in cityTip" :key="index" @click="selectCity(item)">{{item}}</li>
@@ -15,10 +15,11 @@
     <div id="list" ref="outerBox" class="outerBox">
       <div ref="listBox">
         <ul v-for="(item,index) in this.$store.state.cityList" :index="index" :key="index">{{item.letter}}
-          <li v-for="city in item.list" @click="selectCity(city)" :key="index">{{city}}</li>
+          <li v-for="(city,index) in item.list" @click="selectCity(city)"
+              :key="index"
+          >{{city}}</li>
         </ul>
       </div>
-
     </div>
     <ul class="letterList" ref="letterList" @touchend="touchEnd()">
       <li v-for="(item,index) in this.$store.state.cityList" :index="index" :key="index">{{item.letter}}</li>
@@ -41,7 +42,8 @@
 
     methods: {
       selectCity: function (city) {
-        this.$store.state.city = city
+        this.$store.commit("SET_CITY",city)
+        console.log(this.$store.state.city)
         this.cityTip=[]
         this.value=''
       },
@@ -130,7 +132,8 @@
         .catch(function (err) {
           console.log(err);
         })
-
+    },
+    computed:{
 
     }
   }

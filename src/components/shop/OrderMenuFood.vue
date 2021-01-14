@@ -123,7 +123,8 @@
         //规格和attrs都没得选择的，直接加入specfoods[0]
         let food = {}
         food = JSON.parse(JSON.stringify(this.foodFromParent.specfoods[0]))
-        this.$store.state.cart.push(food)
+        // this.$store.state.cart.push(food)
+        this.$store.commit("ADD_IN_CART",food)
         //this.$store.state.cart[this.$store.state.cart.length-1].num=1
         this.$parent.countCurrentShop()
         // console.log(this.$store.state.cart)
@@ -134,10 +135,10 @@
         // 既要知道规格选了哪个，确定价格，也要知道attrs选了哪些
         let food = {}
         food = JSON.parse(JSON.stringify(this.foodFromParent.specfoods[this.spcfIndex]))
-        this.$store.state.cart.push(food)
+        this.$store.commit("ADD_IN_CART",food)
         let obj = {}
         obj = JSON.parse(JSON.stringify(this.attrsValue))
-        this.$store.state.cart[this.$store.state.cart.length - 1]["attrs"] = obj
+        this.$store.commit("ADD_ATTRS",obj)
         // console.log(this.foodFromParent.specfoods[this.spcfIndex])
         this.$parent.countCurrentShop()
         this.foodNum++
@@ -166,7 +167,8 @@
           if (this.$store.state.cart[i].virtual_food_id === this.foodFromParent.virtual_food_id) {
             if (this.$store.state.cart[i].num === 1) {
               //减到num=1时再减就是删除
-              this.$store.state.cart.splice(i, 1)
+              // this.$store.state.cart.splice(i, 1)
+              this.$store.commit("DELET_CART_ITEM",i)
             } else {
               this.$store.state.cart[i].num--
             }
@@ -178,7 +180,7 @@
       },
 
       updateNum: function () {
-        let isZero = true
+          let isZero = true
 
         if (this.foodFromParent.specifications === 0) {
           for (let i = 0; i < this.$store.state.cart.length; i++) {
