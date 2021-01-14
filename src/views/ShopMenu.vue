@@ -101,7 +101,7 @@
       getShopInfo: function () {
         let obj
         this.axios
-          .get('http://localhost:8080/api/api_shop_info.json')
+          .get(window._CONFIG['local']+'api/api_shop_info.json')
           .then(res => (
             obj = res.data,
               // console.log("shop_info.json请求成功"),
