@@ -12,7 +12,6 @@ Vue.use(VueAwesomeSwiper)*/
 
 import 'babel-polyfill'
 
-import Vue from 'vue';
 import { Popup } from 'vant';
 
 Vue.use(Popup);
