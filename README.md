@@ -7,7 +7,7 @@ Compiles and hot-reloads for development
 
 npm run serve
 
-默认用http://localhost:8080/打开，不然需要修改index.html内的window._CONFIG
+http://127.0.0.1:4000/打开
 
 Compiles and minnpmifies for production
 

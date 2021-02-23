@@ -12,10 +12,11 @@ Vue.use(VueAwesomeSwiper)*/
 
 import 'babel-polyfill'
 
-import { Popup } from 'vant';
+import { Popup,Toast  } from 'vant';
 
 Vue.use(Popup);
-
+Vue.use(Toast);
+Vue.prototype.$toast=Toast
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

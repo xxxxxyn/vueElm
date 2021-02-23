@@ -1,6 +1,8 @@
 module.exports = {
     transpileDependencies: ['vue-carousel-list','element-ui'],
   devServer: {
+        host: '127.0.0.1',
+        port: 4000,
     proxy:{
       //cli3代理是proxy没有Table
       '/getAddress': {

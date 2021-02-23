@@ -109,14 +109,15 @@
             goToPay(e) {
                 e.stopPropagation()
                 if (this.$store.state.user.token) {
+                    //已登录
                 } else {
-                    this.$router.push({name: 'login'})
+
                 }
             },
             getMenu: function () {
                 let arr
                 this.axios
-                    .get('http://localhost:8080/api/api_shop_menu.json')
+                    .get(window._CONFIG['main']+'api/api_shop_menu.json')
                     .then(res => (
                         console.log("api_shop_menu.json请求成功"),
                             arr = res.data,

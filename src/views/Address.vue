@@ -115,7 +115,7 @@
     mounted() {
       let arr = [], arr1 = []
       this.axios
-        .get('http://localhost:8080/city.json')
+        .get(window._CONFIG['main']+'city.json')
         .then(res => (
           console.log("cityJson请求成功"),
             this.$store.state.cityList = res.data,
