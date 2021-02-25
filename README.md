@@ -7,7 +7,7 @@ Compiles and hot-reloads for development
 
 npm run serve
 
-http://127.0.0.1:4000/打开
+http://127.0.0.1:4000/   打开
 
 Compiles and minnpmifies for production
 

@@ -79,7 +79,17 @@
                     this.stick = false
                 }
             },
-
+            getLocation() {
+                console.log('00')
+        if (navigator.geolocation)
+        {
+            console.log('111'+navigator.geolocation.getCurrentPosition())
+        }
+        else
+        {
+            console.log('222')
+        }
+            },
             getCity: function () {
                 let arr
                 let ip
@@ -92,7 +102,6 @@
                             ip = arr[0]
                         // 根据ip，请求所在地址
                     )).then(res => {
-
                         this.axios
                             .get(`/getAddress/${ip}`)
                             .then(res => (
@@ -155,7 +164,7 @@
         created: function () {
             this.getEntries()
             this.getShops()
-
+this.getLocation()
         },
 
 
