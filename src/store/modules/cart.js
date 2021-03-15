@@ -9,7 +9,8 @@ const cart = {
         //购物车操作
         //添加商品到购物车
         ADD_IN_CART(state,food){
-            state.cart.push(food)
+            console.log('111')
+            // state.cart.push(food)
         },
         // this.$store.state.cart[this.$store.state.cart.length - 1]["attrs"] = obj
         //添加选择的attrs

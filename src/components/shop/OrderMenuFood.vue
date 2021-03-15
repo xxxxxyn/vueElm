@@ -124,7 +124,7 @@
         let food = {}
         food = JSON.parse(JSON.stringify(this.foodFromParent.specfoods[0]))
         // this.$store.state.cart.push(food)
-        this.$store.commit("ADD_IN_CART",food)
+        this.$store.cart.commit("ADD_IN_CART",food)
         //this.$store.state.cart[this.$store.state.cart.length-1].num=1
         this.$parent.countCurrentShop()
         // console.log(this.$store.state.cart)
